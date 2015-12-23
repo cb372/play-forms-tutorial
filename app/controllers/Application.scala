@@ -23,4 +23,7 @@ class Application extends Controller {
     Ok(views.html.listWidgets(widgets.toSeq))
   }
 
+  // This will be the action that handles our form post
+  def createWidget = TODO
+
 }
