@@ -18,7 +18,9 @@
 
   @helper.form(routes.Application.createWidget) {
 
-    <h2>TODO form fields</h2>
+    <input type="text" id="@{form("name").id}" name="@{form("name").label}" value="@{form("name").value}">
+
+    <input type="text" id="@{form("price").id}" name="@{form("price").label}" value="@{form("price").value}">
 
     <button type="submit">Create widget</button>
 
