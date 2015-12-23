@@ -5,11 +5,12 @@ import models.Widget
 import play.api._
 import play.api.data._
 import play.api.data.Forms._
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 
 import scala.collection.mutable.ArrayBuffer
 
-class Application extends Controller {
+class Application(val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   private val widgets = ArrayBuffer(
     Widget("Widget 1", 123),
