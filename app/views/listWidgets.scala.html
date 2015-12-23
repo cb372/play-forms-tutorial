@@ -16,11 +16,12 @@
 
   <hr/>
 
-  <form method="POST" action="/widgets">
+  @helper.form(routes.Application.createWidget) {
 
     <h2>TODO form fields</h2>
 
     <button type="submit">Create widget</button>
 
-  </form>
+  }
+
 }
