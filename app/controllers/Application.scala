@@ -21,7 +21,7 @@ class Application extends Controller {
     Ok(views.html.index("Your new application is ready."))
   }
 
-  def listWidgets = Action {
+  def listWidgets = Action { implicit request =>
     // Pass an unpopulated form to the template
     Ok(views.html.listWidgets(widgets.toSeq, Application.createWidgetForm))
   }
