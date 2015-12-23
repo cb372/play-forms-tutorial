@@ -28,7 +28,11 @@ class Application(val messagesApi: MessagesApi) extends Controller with I18nSupp
   }
 
   // This will be the action that handles our form post
-  def createWidget = TODO
+  def createWidget = Action(parse.form(Application.createWidgetForm)) { request =>
+    val widget = request.body
+    widgets.append(widget)
+    Redirect(routes.Application.listWidgets)
+  }
 
 }
 
