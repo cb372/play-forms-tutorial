@@ -1,4 +1,4 @@
-@(widgets: Seq[Widget], form: Form[Widget])
+@(widgets: Seq[Widget], form: Form[Widget])(implicit messages: play.api.i18n.Messages)
 
 @main("Widgets") {
 
@@ -9,7 +9,7 @@
     </thead>
     <tbody>
     @for(w <- widgets) {
-      <tr><td>@w.name</td><td>@w.price</td>
+      <tr><td>@w.name</td><td>@w.price</td></tr>
     }
     </tbody>
   </table>
