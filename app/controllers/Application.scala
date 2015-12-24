@@ -28,10 +28,18 @@ class Application(val messagesApi: MessagesApi) extends Controller with I18nSupp
   }
 
   // This will be the action that handles our form post
-  def createWidget = Action(parse.form(Application.createWidgetForm)) { request =>
-    val widget = request.body
-    widgets.append(widget)
-    Redirect(routes.Application.listWidgets)
+  def createWidget = Action { implicit request =>
+    val formValidationResult = Application.createWidgetForm.bindFromRequest
+    formValidationResult.fold({ formWithErrors =>
+      // This is the bad case, where the form had validation errors.
+      // Let's show the user the form again, with the errors highlighted.
+      // Note how we pass the form with errors to the template.
+      BadRequest(views.html.listWidgets(widgets.toSeq, formWithErrors))
+    }, { widget =>
+      // This is the good case, where the form was successfully parsed as a Widget.
+      widgets.append(widget)
+      Redirect(routes.Application.listWidgets)
+    })
   }
 
 }
