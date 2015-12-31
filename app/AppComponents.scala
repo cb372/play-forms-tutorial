@@ -12,7 +12,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
 
   override lazy val httpFilters = Seq(csrfFilter)
   val messagesApi: MessagesApi = new DefaultMessagesApi(environment, configuration, new DefaultLangs(configuration))
-  val appController = new Application(messagesApi)
+  val appController = new Application(messagesApi)(csrfConfig)
   val assets = new controllers.Assets(httpErrorHandler)
   val router: Router = new Routes(httpErrorHandler, appController, assets)
 

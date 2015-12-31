@@ -7,10 +7,11 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
+import play.filters.csrf.CSRFConfig
 
 import scala.collection.mutable.ArrayBuffer
 
-class Application(val messagesApi: MessagesApi) extends Controller with I18nSupport {
+class Application(val messagesApi: MessagesApi)(implicit csrfConfig: CSRFConfig) extends Controller with I18nSupport {
 
   private val widgets = ArrayBuffer(
     Widget("Widget 1", 123),

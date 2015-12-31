@@ -1,4 +1,4 @@
-@(widgets: Seq[Widget], form: Form[Widget])(implicit messages: play.api.i18n.Messages, request: RequestHeader)
+@(widgets: Seq[Widget], form: Form[Widget])(implicit messages: play.api.i18n.Messages, request: RequestHeader, csrfConfig: play.filters.csrf.CSRFConfig)
 
 @main("Widgets") {
 
@@ -18,7 +18,7 @@
 
   @helper.form(routes.Application.createWidget) {
 
-    @helper.CSRF.formField
+    @helper.CSRFshim.formField
 
     @helper.inputText(form("name"))
 
