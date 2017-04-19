@@ -9,7 +9,7 @@ I recommend you read through the code one commit at a time, starting at the olde
 Start the Play app:
 
 ```
-$ ./activator run
+$ sbt run
 ```
 
 And open [http://localhost:9000/widgets](http://localhost:9000/widgets)
