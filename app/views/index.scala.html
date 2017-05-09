@@ -1,7 +1,12 @@
-@(message: String)
+@()
 
 @main("Welcome to Play") {
+<div>
+    <ul>
+        <li>Please go to <a href="@routes.WidgetController.listWidgets">@routes.WidgetController.listWidgets</a></li>
+        <li>Please go to <a href="@routes.MessagesWidgetController.listWidgets">@routes.MessagesWidgetController.listWidgets</a></li>
+    </ul>
 
-    @play20.welcome(message)
+</div>
 
 }
