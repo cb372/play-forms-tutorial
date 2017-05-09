@@ -4,9 +4,17 @@ import javax.inject.Inject
 
 import models.Widget
 import play.api.data._
+import play.api.i18n.I18nSupport
+import play.api.mvc.{AbstractController, AnyContent, Request}
 
-class WidgetController @Inject()(cc: MyControllerComponents) extends MyAbstractController(cc) {
-  import WidgetController._
+/**
+ * The classic WidgetController using I18nSupport.
+ *
+ * I18nSupport provides implicits that create a Messages instances from
+ * a request using implicit conversion.
+ */
+class WidgetController @Inject()(cc: MessagesControllerComponents) extends AbstractController(cc) with I18nSupport {
+  import WidgetForm._
 
   private val widgets = scala.collection.mutable.ArrayBuffer(
     Widget("Widget 1", 123),
@@ -24,7 +32,7 @@ class WidgetController @Inject()(cc: MyControllerComponents) extends MyAbstractC
   }
 
   // This will be the action that handles our form post
-  def createWidget = Action { implicit request =>
+  def createWidget = Action { implicit request: Request[AnyContent] =>
     val errorFunction = { formWithErrors: Form[Widget] =>
       // This is the bad case, where the form had validation errors.
       // Let's show the user the form again, with the errors highlighted.
@@ -41,22 +49,5 @@ class WidgetController @Inject()(cc: MyControllerComponents) extends MyAbstractC
     val formValidationResult = widgetForm.bindFromRequest
     formValidationResult.fold(errorFunction, successFunction)
   }
-
-}
-
-object WidgetController {
-  import play.api.data.Forms._
-
-  /**
-   * The form definition for the "create a widget" form.
-   * It specifies the form fields and their types,
-   * as well as how to convert from a Widget to form data and vice versa.
-   */
-  val widgetForm = Form(
-    mapping(
-      "name" -> text,
-      "price" -> number
-    )(Widget.apply)(Widget.unapply)
-  )
 
 }

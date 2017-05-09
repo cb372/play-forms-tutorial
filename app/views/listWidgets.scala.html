@@ -16,7 +16,7 @@
 
   <hr/>
 
-  @helper.form(routes.WidgetController.createWidget) {
+  @helper.form(routes.WidgetForm.createWidget) {
     @helper.CSRF.formField
 
     @helper.inputText(form("name"))
