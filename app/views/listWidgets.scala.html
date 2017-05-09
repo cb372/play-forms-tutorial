@@ -1,4 +1,4 @@
-@(widgets: Seq[Widget], form: Form[Widget])(implicit request: MessagesRequestHeader)
+@(widgets: Seq[Widget], form: Form[Widget], postUrl: Call)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @main("Widgets") {
 
@@ -16,7 +16,7 @@
 
   <hr/>
 
-  @helper.form(routes.WidgetForm.createWidget) {
+  @helper.form(postUrl) {
     @helper.CSRF.formField
 
     @helper.inputText(form("name"))

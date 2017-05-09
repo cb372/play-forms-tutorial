@@ -4,11 +4,8 @@ import models._
 
 import javax.inject.Inject
 
-import play.api.http.FileMimeTypes
-import play.api.i18n.{Langs, MessagesApi}
 import play.api.mvc._
 
-import scala.concurrent.ExecutionContext
 
 /**
  * MessagesWidgetController is like WidgetController, but does not use I18nSupport.
@@ -26,13 +23,15 @@ class MessagesWidgetController @Inject()(cc: MessagesControllerComponents) exten
     Widget("Widget 3", 789)
   )
 
+  private val postUrl = routes.MessagesWidgetController.createWidget()
+
   def index = Action {
     Ok(views.html.index())
   }
 
   def listWidgets = Action { implicit request: MessagesRequest[AnyContent] =>
     // Pass an unpopulated form to the template
-    Ok(views.html.listWidgets(widgets, widgetForm))
+    Ok(views.html.listWidgets(widgets, widgetForm, postUrl))
   }
 
   // This will be the action that handles our form post
@@ -41,7 +40,7 @@ class MessagesWidgetController @Inject()(cc: MessagesControllerComponents) exten
       // This is the bad case, where the form had validation errors.
       // Let's show the user the form again, with the errors highlighted.
       // Note how we pass the form with errors to the template.
-      BadRequest(views.html.listWidgets(widgets, formWithErrors))
+      BadRequest(views.html.listWidgets(widgets, formWithErrors, postUrl))
     }
 
     val successFunction = { widget: Widget =>
@@ -55,47 +54,3 @@ class MessagesWidgetController @Inject()(cc: MessagesControllerComponents) exten
   }
 
 }
-
-/**
- * Abstract Controller that is like [[play.api.mvc.AbstractController]]
- * but uses "def Action: ActionBuilder[MessagesRequest, AnyContent]".
- */
-abstract class MessagesAbstractController @Inject()(
-  protected val controllerComponents: MessagesControllerComponents
-) extends BaseControllerWithoutAction {
-
-  def Action: ActionBuilder[MessagesRequest, AnyContent] = {
-    controllerComponents.messagesActionBuilder.compose(controllerComponents.actionBuilder)
-  }
-}
-
-/**
- * Trait that is like [[play.api.mvc.BaseController]]
- * but does not add "def Action: ActionBuilder[Request, AnyContent]".
- */
-trait BaseControllerWithoutAction extends ControllerHelpers {
-
-  protected def controllerComponents: ControllerComponents
-
-  def parse: PlayBodyParsers = controllerComponents.parsers
-
-  def defaultExecutionContext: ExecutionContext = controllerComponents.executionContext
-
-  implicit def messagesApi: MessagesApi = controllerComponents.messagesApi
-
-  implicit def supportedLangs: Langs = controllerComponents.langs
-
-  implicit def fileMimeTypes: FileMimeTypes = controllerComponents.fileMimeTypes
-}
-
-case class MessagesControllerComponents @Inject()(
-  messagesActionBuilder: MessagesActionBuilder,
-  actionBuilder: DefaultActionBuilder,
-  parsers: PlayBodyParsers,
-  messagesApi: MessagesApi,
-  langs: Langs,
-  fileMimeTypes: FileMimeTypes,
-  executionContext: scala.concurrent.ExecutionContext
-) extends ControllerComponents
-
-
